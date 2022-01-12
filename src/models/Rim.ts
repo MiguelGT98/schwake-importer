@@ -1,3 +1,5 @@
+import { Schema, model, connect } from "mongoose";
+
 // Different models for different versions of rims.
 export class Rim {
   code: number; // Chars: 0-4
@@ -71,4 +73,29 @@ export function validateData(data: string, version: string): boolean {
   }
 
   return true;
+}
+
+// Create a Mongo schema and model for our Rim.
+const schema = new Schema<Rim>(
+  {
+    code: { type: Number, required: true },
+    width: { type: Number, required: true },
+    height: { type: String, required: true },
+    onePiece: { type: Boolean, required: true },
+    diameter: { type: Number, required: true },
+    material: { type: String, required: true },
+  },
+  { timestamps: true }
+);
+
+// Create a Model.
+const RimModel = model<Rim>("rims", schema);
+
+export async function insertRims(rims: Array<Rim>) {
+  try {
+    await connect("mongodb://localhost:27018/schwake");
+    await RimModel.insertMany(rims);
+  } catch (error) {
+    console.error(error);
+  }
 }

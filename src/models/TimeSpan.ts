@@ -1,3 +1,5 @@
+import { Schema, model, connect } from "mongoose";
+
 // Different models for different versions of timespans.
 export class TimeSpan {
   id: number; // Chars 0-7
@@ -65,4 +67,27 @@ export function validateData(data: string, version: string): boolean {
   }
 
   return true;
+}
+
+// Create a Mongo schema and model for our Rim.
+const schema = new Schema<TimeSpan>(
+  {
+    id: { type: Number, required: true },
+    schwackeCode: { type: Number, required: true },
+    validTo: { type: Date, required: true },
+    validFrom: { type: Date, required: true },
+  },
+  { timestamps: true }
+);
+
+// Create a Model.
+const TimeSpanModel = model<TimeSpan>("timespans", schema);
+
+export async function insertTimeSpans(timeSpans: Array<TimeSpan>) {
+  try {
+    await connect("mongodb://localhost:27018/schwake");
+    await TimeSpanModel.insertMany(timeSpans);
+  } catch (error) {
+    console.error(error);
+  }
 }
