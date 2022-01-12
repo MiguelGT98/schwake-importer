@@ -1,5 +1,5 @@
 // Different models for different versions of timespans.
-class TimeSpan {
+export class TimeSpan {
   id: number; // Chars 0-7
   schwackeCode: number; // Chars 8-15
   validFrom: Date; // Chars 16-25
@@ -41,7 +41,7 @@ export function CreateTimeSpan(data: string, version: string) {
   }
 }
 
-function validateData(data: string, version: string): boolean {
+export function validateData(data: string, version: string): boolean {
   // Perform validations. If found invalid at any point, return false.
 
   // General validations apply to any version.
@@ -51,27 +51,17 @@ function validateData(data: string, version: string): boolean {
   // Different validations are specific to a version.
   switch (version) {
     case "v1":
-      const id = data.slice(0, 8);
-      if (!id || id === "" || id === " " || id.length !== 8) return false;
+      const id = data.slice(0, 8).split(" ").join("");
+      if (!id || id.length !== 8) return false;
 
-      const schwackeCode = data.slice(8, 16);
-      if (
-        !schwackeCode ||
-        schwackeCode === "" ||
-        schwackeCode === " " ||
-        schwackeCode.length !== 8
-      )
-        return false;
+      const schwackeCode = data.slice(8, 16).split(" ").join("");
+      if (!schwackeCode || schwackeCode.length !== 8) return false;
 
-      const height = data.slice(10, 11);
-      if (!height || height === "" || height === " " || height.length !== 1)
-        return false;
-
-      const validFrom = data.slice(16, 26);
+      const validFrom = data.slice(16, 26).split(" ").join("");
       if (!validFrom || validFrom.length !== 10) return false;
 
-      const validTo = data.slice(26);
-      if (!validTo || validTo.length !== 10) return false;
+      const validTo = data.slice(26).split(" ").join("");
+      if (!validTo || validTo !== "00.00.0000") return false;
   }
 
   return true;

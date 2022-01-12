@@ -1,5 +1,5 @@
 // Different models for different versions of rims.
-class Rim {
+export class Rim {
   code: number; // Chars: 0-4
   width: number; // Chars: 5-9 (9 could be empty)
   height: string; // Char: 10
@@ -41,7 +41,7 @@ export function CreateRim(data: string, version: string) {
   }
 }
 
-function validateData(data: string, version: string): boolean {
+export function validateData(data: string, version: string): boolean {
   // Perform validations. If found invalid at any point, return false.
 
   // General validations apply to any version.
@@ -51,22 +51,19 @@ function validateData(data: string, version: string): boolean {
   // Different validations are specific to a version.
   switch (version) {
     case "v1":
-      const code = data.slice(0, 5);
-      if (!code || code === "" || code === " " || code.length !== 5)
-        return false;
+      const code = data.slice(0, 5).split(" ").join("");
+      if (!code || code.length !== 5) return false;
 
-      const width = data.slice(5, 10).replace(" ", "");
-      if (!width || width === "" || width === " " || width.length < 4)
-        return false;
+      const width = data.slice(5, 10).split(" ").join("");
+      if (!width || width.length < 4) return false;
 
-      const height = data.slice(10, 11);
-      if (!height || height === "" || height === " " || height.length !== 1)
-        return false;
+      const height = data.slice(10, 11).split(" ").join("");
+      if (!height || height.length !== 1) return false;
 
       const onePiece = data.slice(11, 12);
       if (!onePiece || (onePiece !== "X" && onePiece !== "x")) return false;
 
-      const diameter = data.slice(12, 14);
+      const diameter = data.slice(12, 14).split(" ").join("");
       if (!diameter || diameter.length !== 2) return false;
 
       const material = data.slice(14);
