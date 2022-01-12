@@ -93,7 +93,7 @@ const RimModel = model<Rim>("rims", schema);
 
 export async function insertRims(rims: Array<Rim>) {
   try {
-    await connect("mongodb://localhost:27018/schwake");
+    await connect("mongodb://localhost:27018/schwacke");
     await RimModel.insertMany(rims);
   } catch (error) {
     console.error(error);

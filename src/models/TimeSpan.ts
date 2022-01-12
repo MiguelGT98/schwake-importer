@@ -85,7 +85,7 @@ const TimeSpanModel = model<TimeSpan>("timespans", schema);
 
 export async function insertTimeSpans(timeSpans: Array<TimeSpan>) {
   try {
-    await connect("mongodb://localhost:27018/schwake");
+    await connect("mongodb://localhost:27018/schwacke");
     await TimeSpanModel.insertMany(timeSpans);
   } catch (error) {
     console.error(error);

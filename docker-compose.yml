@@ -3,7 +3,7 @@ services:
     image : mongo
     container_name: mongodb
     environment:
-      - MONGO_INITDB_DATABASE=schwake
+      - MONGO_INITDB_DATABASE=schwacke
     ports:
       - 27018:27017
     restart: unless-stopped
